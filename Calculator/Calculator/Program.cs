@@ -38,7 +38,8 @@ namespace Calculator
              */
 
             //Tento komentar smaz a misto nej zacni psat svuj prdacky kod.
-
+            string Input1 = Console.ReadLine();
+            Console.WriteLine(Input1);
             Console.ReadKey(); //Toto nech jako posledni radek, aby se program neukoncil ihned, ale cekal na stisk klavesy od uzivatele.
         }
     }
