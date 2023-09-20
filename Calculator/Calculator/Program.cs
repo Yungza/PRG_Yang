@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO.Pipes;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -16,18 +17,22 @@ namespace Calculator
         static void Main(string[] args)
         {
             string konec = "";
+            double ans = 0;
             while (konec != "ne")
             {
                 konec = "";
                 string Input1 = "";
                 string Input2= "";
                 string operation = "";
-                while (!double.TryParse(Input1,out double result)) // kontrola jestli je to číslo
+                double x = 0;
+                double y= 0;
+                double Result = 0;
+                while (!double.TryParse(Input1, out double result) && Input1!="ans") // kontrola jestli je to číslo
                 {
                     Console.WriteLine("zadej platné číslo x");
                     Input1 = Console.ReadLine();
                 }
-                while (!double.TryParse(Input2,out double result))
+                while (!double.TryParse(Input2,out double result) && Input2 !="ans")
                 {
                     Console.WriteLine("zadej platné číslo y");
                     Input2 = Console.ReadLine();
@@ -36,9 +41,23 @@ namespace Calculator
                 {   Console.WriteLine("zadej operaci +;-;*;/");
                     operation = Console.ReadLine(); 
                 }
-                double x = Convert.ToDouble(Input1);
-                double y = Convert.ToDouble(Input2);
-                double Result = 0;
+                if (Input1 =="ans")
+                {
+                    x = ans;
+                }
+                else
+                {
+                    x = Convert.ToDouble(Input1);
+                }
+                if (Input2 == "ans")
+                {
+                    x = ans;
+                }
+                else
+                {
+                    y = Convert.ToDouble(Input2);
+                }
+                
                 switch (operation)
                 {
                     case "+":
@@ -58,6 +77,8 @@ namespace Calculator
                     break;
                 }
                 Console.WriteLine(x + operation + y + "=" + Result);
+                ans = Result;
+                
                 while (konec!= "ano"&& konec!= "ne")
                 {
                     Console.WriteLine("Chceš pokračovat? Zadej ano/ne");
