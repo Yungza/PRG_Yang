@@ -17,7 +17,7 @@ namespace Calculator
         static void Main(string[] args)
         {
             Console.WriteLine("zadej typ operace: commonOperation; equation");
-            string whichFunction = Console.ReadLine();
+            string whichFunction = "equation";
             switch (whichFunction)
             {
                 case "commonOperation":
@@ -104,27 +104,45 @@ namespace Calculator
 
             }
             void equationFunction()
+            
             {
                 Console.WriteLine("Zadej jednoduchou rovnici");
-                string equation = Console.ReadLine();
+                string equation = Console.ReadLine()+"_";
                 int orderOfEqual = equation.IndexOf('=');
                 int lengthOfEquation = equation.Length;
-                int variable = 0;
+                double variable = 0;
+                string x = "0";
                 for (int i = 0; i < equation.Length; i++)
                 {
-                    if (i < orderOfEqual)
+                    if (i <= orderOfEqual)
                     {
                         if (Int32.TryParse(equation[i].ToString(), out int result))
                         {
-                            variable = variable - Int32.Parse(equation[i].ToString());
+                            x += equation[i];
+                        }
+                        else
+                        {
+                            variable = variable - Int32.Parse(x);
+                            x = "0";
                         }
                     }
-                    else if (i > orderOfEqual)
+                    if (i > orderOfEqual)
                     {
                         if (Int32.TryParse(equation[i].ToString(), out int result))
                         {
-                            variable = variable + Int32.Parse(equation[i].ToString());
+                            x += equation[i];
                         }
+                        else
+                        {
+                            variable = variable + Int32.Parse(x);
+                            x = "0";
+                        }
+                        
+                    }
+                    if (i==orderOfEqual)
+                    {
+                        variable = variable - Int32.Parse(x);
+                        x = "0";
                     }
                 }
                 Console.WriteLine("x = "+ variable);
