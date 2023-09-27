@@ -59,31 +59,67 @@ namespace Deathroll
             int goldBot = 1000;
             int deathRollValue = 0;
             int roll = 0;
-            int start = rng.Next(0,2);
-            int turn= 1;
-            while (goldPlayer != 0|| goldBot != 0)
+            while (goldPlayer > 0 && goldBot > 0)
             {
+                int start = rng.Next(0, 2);
                 if (start == 1) 
                 {
                     Console.WriteLine("Začínáš, urči hodnotu death rollu");
                     deathRollValue = Int32.Parse(Console.ReadLine());
-                    roll = rng.Next(0, deathRollValue);
-                    turn = 2;
+                    roll = rng.Next(1, deathRollValue);
                 }
                 else if (start == 0)
                 {   
-                    roll = rng.Next(0,goldBot);
+                    deathRollValue = rng.Next(1,goldBot);
+                    roll = deathRollValue;
                     Console.WriteLine("Začíná počítač, hodnta death rollu je: " + deathRollValue.ToString());
                 }
-                for (int i =turn; i < 100; i++)
+                for (int i =start + 1; i < 100; i++)
                 {
                     if (i %2==0)
                     {
                         Console.WriteLine("na tahu je počítač");
-                        roll =rng.Next(0,roll);
+                        roll =rng.Next(1,roll);
+                        Console.WriteLine(roll.ToString());
+                        Console.ReadKey();
+                        if (roll == 1)
+                        {
+                            Console.WriteLine("počítač prohrál");
+                            goldBot -= deathRollValue;
+                            goldPlayer += deathRollValue;
+                            Console.WriteLine("počítač: " + goldBot + " hráč: " + goldPlayer);
+                            Console.ReadKey();
+                            break;
+                        }
+                    }
+                    else
+                    {
+                        Console.WriteLine("jsi na tahu");
+                        roll= rng.Next(1,roll);
+                        Console.WriteLine(roll.ToString());
+                        Console.ReadKey();
+                        if(roll ==1)
+                        {
+                            Console.WriteLine("hráč prohrál");
+                            goldBot += deathRollValue;
+                            goldPlayer -= deathRollValue;
+                            Console.WriteLine("počítač: " + goldBot + " hráč: " + goldPlayer);
+                            Console.ReadKey();
+                            break;
+                        }
+                        
                     }
                 }
             }
+            if (goldPlayer <= 0)
+            {
+                Console.WriteLine("hráč zkrachoval, vyhrává počítač");
+            }
+            else
+            {
+                Console.WriteLine("počítač zkrachoval, vyhrává hráč");
+            }
+            Console.ReadKey();
         }
     }
 }
