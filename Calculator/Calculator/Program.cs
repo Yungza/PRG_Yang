@@ -69,7 +69,7 @@ namespace Calculator
                     }
                     if (input2 == "ans")
                     {
-                        x = ans;
+                        y = ans;
                     }
                     else
                     {
