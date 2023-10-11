@@ -57,32 +57,44 @@ namespace Deathroll
             Random rng = new Random();
             int goldPlayer = 1000;
             int goldBot = 1000;
-            int deathRollValue = 0;
             int roll = 0;
             while (goldPlayer > 0 && goldBot > 0)
             {
+                string input = "";
                 int start = rng.Next(0, 2);
+                int deathRollValue = 9999;// TADY OPRAVIT
                 if (start == 1) 
                 {
-                    Console.WriteLine("Začínáš, urči hodnotu death rollu");
-                    deathRollValue = Int32.Parse(Console.ReadLine());
-                    roll = rng.Next(1, deathRollValue);
+                    while (!int.TryParse(input, out int result) || deathRollValue > goldPlayer || deathRollValue > goldBot)
+                    {
+                        Console.WriteLine("Začínáš, urči hodnotu death rollu, musí být menší než gold hráčů");
+                        input = Console.ReadLine();
+                        deathRollValue = Int32.Parse(input);
+                        roll = deathRollValue;
+                    }
                 }
                 else if (start == 0)
-                {   
-                    deathRollValue = rng.Next(1,goldBot);
+                {
+                    if (goldBot<=goldPlayer)
+                    {
+                        deathRollValue = rng.Next(1, goldBot);
+                    }
+                    else
+                    {
+                        deathRollValue = rng.Next(1, goldPlayer);
+                    }
                     roll = deathRollValue;
                     Console.WriteLine("Začíná počítač, hodnta death rollu je: " + deathRollValue.ToString());
                 }
-                for (int i =start + 1; i < 100; i++)
+                for (int i =start + 1; i < 9999; i++) //změna kola
                 {
                     if (i %2==0)
                     {
                         Console.WriteLine("na tahu je počítač");
-                        roll =rng.Next(1,roll);
+                        roll = rng.Next(1,roll); // nový roll
                         Console.WriteLine(roll.ToString());
                         Console.ReadKey();
-                        if (roll == 1)
+                        if (roll == 1) 
                         {
                             Console.WriteLine("počítač prohrál");
                             goldBot -= deathRollValue;
@@ -95,7 +107,7 @@ namespace Deathroll
                     else
                     {
                         Console.WriteLine("jsi na tahu");
-                        roll= rng.Next(1,roll);
+                        roll= rng.Next(1,roll); // nový roll
                         Console.WriteLine(roll.ToString());
                         Console.ReadKey();
                         if(roll ==1)
