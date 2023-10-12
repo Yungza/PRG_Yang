@@ -84,10 +84,10 @@ namespace Calculator
                 while (true)
                 {
                     string operation = "";
-                    double x = InputToNumber();
-                    Console.WriteLine("první číslo: " + x);
-                    double y = InputToNumber();
-                    Console.WriteLine("druhé číslo: " + y);
+                    double firstNumber = InputToNumber();
+                    Console.WriteLine("první číslo: " + firstNumber);
+                    double secondNumber = InputToNumber();
+                    Console.WriteLine("druhé číslo: " + secondNumber);
                     double result = 0;
                     while (operation != "+" && operation != "-" && operation != "*" && operation != "/") // kontrola jestli je to platná operace
                     {
@@ -97,22 +97,22 @@ namespace Calculator
                     switch (operation)
                     {
                         case "+":
-                            result = x + y;
+                            result = firstNumber + secondNumber;
                             break;
 
                         case "-":
-                            result = x - y;
+                            result = firstNumber - secondNumber;
                             break;
 
                         case "*":
-                            result = x * y;
+                            result = firstNumber * secondNumber;
                             break;
 
                         case "/":
-                            result = x / y;
+                            result = firstNumber / secondNumber;
                             break;
                     }
-                    Console.WriteLine(x + operation + y + "=" + result);
+                    Console.WriteLine(firstNumber + operation + secondNumber + "=" + result);
                     ans = result;
                     Console.WriteLine("pro ukončení programu napiš libovolný text, v opačném případě zmáčkni pouze enter");
                     if (Console.ReadLine()!= "") 
