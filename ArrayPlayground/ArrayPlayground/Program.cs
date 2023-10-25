@@ -44,13 +44,11 @@ namespace ArrayPlayground
             Console.WriteLine("průměr je: " + average);
 
             //TODO 5: Najdi maximum v poli a vypiš ho do konzole.
-            Array.Sort(myInt);
-            int max = myInt[myInt.Length -1];
+            int max = myInt.Max();
             Console.WriteLine("největší prvek: " + max) ;
 
             //TODO 6: Najdi minimum v poli a vypiš ho do konzole.
-            Array.Sort(myInt);
-            int min= myInt[0];
+            int min = myInt.Min();
             Console.WriteLine("nejmenší prvek: " + min);
 
             //TODO 7: Vyhledej v poli číslo, které zadá uživatel, a vypiš index nalezeného prvku do konzole. 
@@ -80,11 +78,18 @@ namespace ArrayPlayground
             }
             for (int i = 0; i < counts.Length; i++)
             {
-                Console.WriteLine($"četnost{i}je{counts[i]}");
+                Console.Write($"četnost{i}je{counts[i]}");
             }
             //TODO 10: Vytvoř druhé pole, do kterého zkopíruješ prvky z prvního pole v opačném pořadí.
-
-
+            int[] reversedMyInt = new int[100];
+            for (int i = reversedMyInt.Length-1; i >=0; i--)
+            {
+                reversedMyInt[i] = myInt[99 - i];
+            }
+            for (int i = 0; i < reversedMyInt.Length; i++)
+            {
+                Console.Write($"{reversedMyInt[i]}");
+            }
             Console.ReadKey();
         }
     }
