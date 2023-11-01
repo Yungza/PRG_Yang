@@ -52,10 +52,10 @@ namespace ArrayPlayground
             Console.WriteLine("nejmenší prvek: " + min);
 
             //TODO 7: Vyhledej v poli číslo, které zadá uživatel, a vypiš index nalezeného prvku do konzole. 
-            int index = 0;
+            int index;
             Console.WriteLine("zadej číslo jehož pořadí v listu chceš zjistit");
             int find = int.Parse(Console.ReadLine());
-            index = Array.IndexOf(myInt, find)+1;
+            index = Array.IndexOf(myInt, find) + 1;
             if (index == 0)
             {
                 Console.WriteLine("prvek v listu neexistuje");

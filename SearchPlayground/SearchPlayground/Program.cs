@@ -15,7 +15,7 @@ namespace SearchPlayground
             {
                 if (array[i]==elementToSearch)
                 {
-                    return i+1;
+                    return i;
                 }
             }
             return -1;
@@ -26,16 +26,19 @@ namespace SearchPlayground
             int upper = array.Length - 1;
             int lower = 0;
             int middle;
+            int count = 0;
             while (true)
             {
+                count++;
                 if (elementToSearch == array[upper])
                 {
-                    return upper+1 ;
+                    return upper ;
                 }
                 middle = (upper + lower) / 2;
                 if (elementToSearch == array[middle])
                 {
-                    return middle+1;  
+                    Console.WriteLine($"binární dělení dělilo interval {count} krát");
+                    return middle;  
                 }
                 else if (elementToSearch > array[middle])
                 {
@@ -59,19 +62,19 @@ namespace SearchPlayground
             int middle = (lower + upper) / 2;
             if(elementToSearch == array[upper])
             {
-                return upper + 1;
+                return upper;
             }
             if (elementToSearch == array[middle])
             {
-                return middle+1;
+                return middle;
             }
             else if (elementToSearch > array[middle])
             {
-                return BinarySearchRecursive(array, elementToSearch, middle, upper);
+                return BinarySearchRecursive(array, elementToSearch, middle+1, upper);
             }
             else if (elementToSearch < array[middle])
             {
-                return BinarySearchRecursive(array, elementToSearch, lower, middle);
+                return BinarySearchRecursive(array, elementToSearch, lower, middle-1);
             }
             return -1;
             //TODO naimplementuj binární vyhledávání rekurzivním způsobem (Zamysli se nad parametry, které tato funkce přijímá vzpomeň si na přístup Rozděl a Panuj.)
