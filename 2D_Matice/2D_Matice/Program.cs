@@ -1,20 +1,24 @@
-﻿namespace _2D_Matice
+﻿using System;
+
+namespace _2D_Matice
 {
     internal class Program
     {
         static void Main(string[] args)
         {
             int[,] initialArray = new int[InputInt("počtu řádků"), InputInt("počtu sloupců")];
-            int[,] workArray = new int[initialArray.GetLength(0), initialArray.GetLength(1)];
-            FillArray(initialArray, workArray);
+            int[,] workArray = initialArray;
+            FillArray(initialArray);
             PrintArray(workArray);
             while (true)
             {
                 Console.WriteLine("operace k dispozici:");
                 Console.WriteLine("0. resetování matice");
                 Console.WriteLine("1. prohazování");
-                string input = LimitInput(0, 2, "operace").ToString();
-                string input2;
+                Console.WriteLine("2. operace");
+                Console.WriteLine("3. sčítání/odčítání dvou matic");
+                string input = LimitInput(0, 3, "operace").ToString();
+                string input2 = "";
                 switch (input)
                 {
                     case "0":
@@ -48,6 +52,42 @@
                                 break;
                         }
                         break;
+                    case "2":
+                        Console.WriteLine("k dispozici:");
+                        Console.WriteLine("1. násobení celé matice číslem");
+                        Console.WriteLine("2. násobení konkrétního řádku");
+                        Console.WriteLine("3. násobení konkrétního sloupce");
+                        input2 = LimitInput(1, 3, "specifikované operace").ToString();
+                        switch (input2)
+                        {
+                            case "1":
+                                MatrixMultiplication(InputInt("čísla, kterým chceš vynásobit matici"), workArray);
+                                break;
+                            case "2":
+                                RowMultiplication(LimitInput(0, workArray.GetLength(0)-1, "řádku, který chceš chceš násobit"), InputInt("čísla, kterým chceš násobit"), workArray);
+                                break;
+                            case "3":
+                                ColMultiplication(LimitInput(0, workArray.GetLength(1) - 1, "sloupce, který chceš chceš násobit"), InputInt("čísla, kterým chceš násobit"), workArray);
+                                break;
+                        }
+                        break;
+                    case "3":
+                        Console.WriteLine("1. sčítání");
+                        Console.WriteLine("2. odčítání");
+                        input2 = LimitInput(1, 2, "specifikované operace").ToString();
+                        switch(input2)
+                        {
+                            case "1":
+                                MatrixAddition(workArray);
+                                break;
+                            case "2":
+                                MatrixSubstraction(workArray);
+                                break;
+                        }
+                        break;
+                    case "4":
+                        MatrixTransposition(workArray);
+                        break;
                 }
             }
         }
@@ -71,16 +111,16 @@
             }
             return input;
         }//limitovaný input
-        static void FillArray(int[,] initialArray, int[,] workArray)
+        static void FillArray(int[,] Array)
         {
             Random rnd = new Random();
             int lastNumber = 0;
-            for (int i = 0; i < initialArray.GetLength(0); i++)
+            for (int i = 0; i < Array.GetLength(0); i++)
             {
-                for (int j = 0; j < initialArray.GetLength(1); j++)
+                for (int j = 0; j < Array.GetLength(1); j++)
                 {
-                    initialArray[i, j] = workArray[i, j] = lastNumber + rnd.Next(1, 10);
-                    lastNumber = initialArray[i, j];
+                    Array[i, j] = lastNumber + rnd.Next(1, 10);
+                    lastNumber = Array[i, j];
                 }
             }
         }// naplní matici rostoucími čísly
@@ -119,20 +159,20 @@
         {
             Random rnd = new Random();
             int xFirst = rnd.Next(0, array.GetLength(0));
-            int xSecond = rnd.Next(0,array.GetLength(0));
-            int yFirst = rnd.Next(0,array.GetLength(1));
-            int ySecond = rnd.Next(0,array.GetLength (1));
+            int xSecond = rnd.Next(0, array.GetLength(0));
+            int yFirst = rnd.Next(0, array.GetLength(1));
+            int ySecond = rnd.Next(0, array.GetLength(1));
             int remember = array[xSecond, ySecond];
             Console.WriteLine($"budu měnit prvek se souřadnicemi x = {yFirst}, y = {xFirst} s prvkem: {ySecond}, {xSecond}");
             array[xSecond, ySecond] = array[xFirst, yFirst];
             array[xFirst, yFirst] = remember;
-            PrintArray (array);
+            PrintArray(array);
         }//prohazování náhodných prvků
         static void RowSwap(int[,] array)
         {
             Console.WriteLine($"zadej dva řádky jenž chceš prohodit");
-            int firstRow = LimitInput(0, array.GetLength(0)-1, "prvního řádku");
-            int secondRow = LimitInput(0, array.GetLength(0)-1, "druhého řádku");
+            int firstRow = LimitInput(0, array.GetLength(0) - 1, "prvního řádku");
+            int secondRow = LimitInput(0, array.GetLength(0) - 1, "druhého řádku");
             int[] remember = new int[array.GetLength(1)];
             for (int i = 0; i < array.GetLength(1); i++)
             {
@@ -143,12 +183,12 @@
                 array[firstRow, i] = array[secondRow, i];
                 array[secondRow, i] = remember[i];
             }
-            PrintArray (array);
+            PrintArray(array);
         }//prohazování řádků
         static void ColSwap(int[,] array)
         {
             Console.WriteLine($"zadej dva sloupce jenž chceš prohodit");
-            int firstColumm = LimitInput(0, array.GetLength(1) - 1,"prvního řádku");
+            int firstColumm = LimitInput(0, array.GetLength(1) - 1, "prvního řádku");
             int secondColumn = LimitInput(0, array.GetLength(1) - 1, "druhého řádku");
             int[] remember = new int[array.GetLength(0)];
             for (int i = 0; i < array.GetLength(0); i++)
@@ -187,7 +227,7 @@
             }
         }//hlavní diagonála
         static void NotMainDiagSwap(int[,] array)
-        {
+        {// tohle bylo giga pain vymýšlet lol
             int remember;
             if (array.GetLength(0) <= array.GetLength(1))
             {
@@ -210,6 +250,67 @@
                 PrintArray(array);
             }
         }//vedlejší diagonála
+        static void MatrixMultiplication(int input, int[,] array)
+        {
+            for (int i = 0; i < array.GetLength(0); i++)
+            {
+                for (int j = 0; j < array.GetLength(1); j++)
+                {
+                    array[i,j] *= input;
+                }
+            }
+            PrintArray(array);
+        }//násobení matice číslem
+        static void RowMultiplication(int row, int input, int[,] array)
+        {
+            for (int i = 0; i < array.GetLength(1); i++)
+            {
+                array[row, i] *= input;
+            }
+            PrintArray(array);
+        }//násobení konkrétního řádku
+        static void ColMultiplication(int column, int input, int[,] array)
+        {
+            for (int i = 0; i < array.GetLength(0); i++)
+            {
+                array[i, column] *= input;
+            }
+            PrintArray(array);
+        }//násobení konkrétního sloupce
+        static void MatrixAddition(int[,] array)
+        {
+            int[,] secondArray = new int[array.GetLength(0),array.GetLength(1)];
+            Console.WriteLine("matice, se kterou se bude sčítat původní:");
+            FillArray(secondArray);
+            PrintArray(secondArray);
+            for (int i = 0; i < array.GetLength(0); i++)
+            {
+                for (int j = 0; j < array.GetLength(1); j++)
+                {
+                    array[i, j] += secondArray[i,j];
+                }
+            }
+            PrintArray(array);
+        }
+        static void MatrixSubstraction(int[,] array)
+        {
+            int[,] secondArray = new int[array.GetLength(0), array.GetLength(1)];
+            Console.WriteLine("matice, se kterou se bude sčítat původní:");
+            FillArray(secondArray);
+            PrintArray(secondArray);
+            for (int i = 0; i < array.GetLength(0); i++)
+            {
+                for (int j = 0; j < array.GetLength(1); j++)
+                {
+                    array[i, j] -= secondArray[i, j];
+                }
+            }
+            PrintArray(array);
+        }
+        static void MatrixTransposition(int[,] array)
+        {
+
+        }
 
     }
 }
