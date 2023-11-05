@@ -26,8 +26,9 @@
                         Console.WriteLine("1. prohazování náhodných prvků");
                         Console.WriteLine("2. prohazování řádků");
                         Console.WriteLine("3. prohazování sloupců");
-                        Console.WriteLine("4. prohazování pořadí prvků na dagonálach");
-                        input2 = LimitInput(1, 4, "specifikované operace").ToString();
+                        Console.WriteLine("4. prohazování pořadí prvků na hlavní dagonále");
+                        Console.WriteLine("5. prohazování pořadí prvků na vedlejší diagonále");
+                        input2 = LimitInput(1, 5, "specifikované operace").ToString();
                         switch (input2)
                         {
                             case "1":
@@ -40,7 +41,10 @@
                                 ColSwap(workArray);
                                 break;
                             case "4":
-                                DiagSwap(workArray);
+                                MainDiagSwap(workArray);
+                                break;
+                            case "5":
+                                NotMainDiagSwap(workArray);
                                 break;
                         }
                         break;
@@ -82,13 +86,30 @@
         }// naplní matici rostoucími čísly
         static void PrintArray(int[,] array)
         {
+            int space;
+            int max = 0;
+            for (int i = 0; i < array.GetLength(0); i++)
+            {
+                for (int j = 0; j < array.GetLength(1); j++)
+                {
+                    if (array[i, j] > max)
+                    {
+                        max = array[i, j];
+                    }
+                }
+            }
             Console.WriteLine("_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ ");
             Console.WriteLine("aktuální matice:");
             for (int i = 0; i < array.GetLength(0); i++)
             {
                 for (int j = 0; j < array.GetLength(1); j++)
                 {
+                    space = max.ToString().Length - array[i, j].ToString().Length;
                     Console.Write(array[i, j] + " ");
+                    for (int k = 0; k < space; k++)
+                    {
+                        Console.Write(" ");
+                    }
                 }
                 Console.WriteLine();
             }
@@ -141,10 +162,54 @@
             }
             PrintArray(array);
         }//prohazování sloupců
-        static void DiagSwap(int[,] array)
+        static void MainDiagSwap(int[,] array)
         {
-
-        }
+            int remember;
+            if (array.GetLength(0) <= array.GetLength(1))
+            {
+                for (int i = 0; i < (array.GetLength(0) - 1) / 2 + 1; i++)
+                {
+                    remember = array[i, i];
+                    array[i, i] = array[array.GetLength(0) - i - 1, array.GetLength(0) - i - 1];
+                    array[array.GetLength(0) - i - 1, array.GetLength(0) - i - 1] = remember;
+                }
+                PrintArray(array);
+            }
+            else
+            {
+                for (int i = 0; i < (array.GetLength(1) - 1) / 2 + 1; i++)
+                {
+                    remember = array[i, i];
+                    array[i, i] = array[array.GetLength(1) - i - 1, array.GetLength(1) - i - 1];
+                    array[array.GetLength(1) - i - 1, array.GetLength(1) - i - 1] = remember;
+                }
+                PrintArray(array);
+            }
+        }//hlavní diagonála
+        static void NotMainDiagSwap(int[,] array)
+        {
+            int remember;
+            if (array.GetLength(0) <= array.GetLength(1))
+            {
+                for (int i = 0; i < (array.GetLength(0) - 1) / 2 + 1; i++)
+                {
+                    remember = array[i, array.GetLength(1) - 1 - i];
+                    array[i, array.GetLength(1) - 1 - i] = array[array.GetLength(0) - 1 - i, array.GetLength(1) - array.GetLength(0) + i];
+                    array[array.GetLength(0) - i - 1, array.GetLength(1) - array.GetLength(0) + i] = remember;
+                }
+                PrintArray(array);
+            }
+            else
+            {
+                for (int i = 0; i < (array.GetLength(1) - 1) / 2 + 1; i++)
+                {
+                    remember = array[i, array.GetLength(1) - 1 - i];
+                    array[i, array.GetLength(1) - 1 - i] = array[array.GetLength(1) - 1 - i, i];
+                    array[array.GetLength(1) - 1 - i, i] = remember;
+                }
+                PrintArray(array);
+            }
+        }//vedlejší diagonála
 
     }
 }
