@@ -17,7 +17,8 @@ namespace _2D_Matice
                 Console.WriteLine("1. prohazování");
                 Console.WriteLine("2. operace");
                 Console.WriteLine("3. sčítání/odčítání dvou matic");
-                string input = LimitInput(0, 3, "operace").ToString();
+                Console.WriteLine("4. transpozice matice");
+                string input = LimitInput(0, 4, "operace").ToString();
                 string input2 = "";
                 switch (input)
                 {
@@ -86,7 +87,7 @@ namespace _2D_Matice
                         }
                         break;
                     case "4":
-                        MatrixTransposition(workArray);
+                        workArray = MatrixTransposition(workArray);
                         break;
                 }
             }
@@ -307,9 +308,18 @@ namespace _2D_Matice
             }
             PrintArray(array);
         }
-        static void MatrixTransposition(int[,] array)
+        static int[,] MatrixTransposition(int[,] array)
         {
-
+            int[,] secondArray = new int[array.GetLength(1), array.GetLength(0)];
+            for (int i = 0; i < array.GetLength(0); i++)
+            {
+                for (int j = 0; j < array.GetLength(1); j++)
+                {
+                    secondArray[j,i] = array[i, j];
+                }
+            }
+            PrintArray(secondArray);
+            return secondArray;
         }
 
     }
