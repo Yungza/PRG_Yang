@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Reflection;
 
 namespace _2D_Matice
 {
@@ -18,7 +19,8 @@ namespace _2D_Matice
                 Console.WriteLine("2. operace");
                 Console.WriteLine("3. sčítání/odčítání dvou matic");
                 Console.WriteLine("4. transpozice matice");
-                string input = LimitInput(0, 4, "operace").ToString();
+                Console.WriteLine("5. násobení matice");
+                string input = LimitInput(0, 5, "operace").ToString();
                 string input2 = "";
                 switch (input)
                 {
@@ -89,6 +91,9 @@ namespace _2D_Matice
                     case "4":
                         workArray = MatrixTransposition(workArray);
                         break;
+                    case "5":
+                        MatrixTheFinalAssignment(workArray);
+                        break;
                 }
             }
         }
@@ -112,16 +117,16 @@ namespace _2D_Matice
             }
             return input;
         }//limitovaný input
-        static void FillArray(int[,] Array)
+        static void FillArray(int[,] array)
         {
             Random rnd = new Random();
             int lastNumber = 0;
-            for (int i = 0; i < Array.GetLength(0); i++)
+            for (int i = 0; i < array.GetLength(0); i++)
             {
-                for (int j = 0; j < Array.GetLength(1); j++)
+                for (int j = 0; j < array.GetLength(1); j++)
                 {
-                    Array[i, j] = lastNumber + rnd.Next(1, 10);
-                    lastNumber = Array[i, j];
+                    array[i, j] = lastNumber + rnd.Next(1, 10);
+                    lastNumber = array[i, j];
                 }
             }
         }// naplní matici rostoucími čísly
@@ -292,7 +297,7 @@ namespace _2D_Matice
                 }
             }
             PrintArray(array);
-        }
+        }//sčítání dvou matic
         static void MatrixSubstraction(int[,] array)
         {
             int[,] secondArray = new int[array.GetLength(0), array.GetLength(1)];
@@ -307,20 +312,59 @@ namespace _2D_Matice
                 }
             }
             PrintArray(array);
-        }
+        }//odčítání 2 matic
         static int[,] MatrixTransposition(int[,] array)
         {
-            int[,] secondArray = new int[array.GetLength(1), array.GetLength(0)];
+            int[,] secondArray = new int[array.GetLength(1), array.GetLength(0)]; // vytvořím matici s převrávenými paramatry, flipnu jejich indexy
             for (int i = 0; i < array.GetLength(0); i++)
             {
-                for (int j = 0; j < array.GetLength(1); j++)
+                for (int j = 0; j < array.GetLength(1); j++) 
                 {
                     secondArray[j,i] = array[i, j];
                 }
             }
             PrintArray(secondArray);
             return secondArray;
-        }
+        }//transpozice matice
+        static void MatrixTheFinalAssignment(int[,] array)
+        {
+            int[,] multiplyArray = new int[array.GetLength(1), InputInt("počtu sloupců jímž chceš násobit")]; //počet řádků v druhé matici se musí rovnat počtu sloupců první matice
+            FillArray(multiplyArray);
+            PrintArray(multiplyArray);
+            int[,] resultArray = new int[array.GetLength(0), multiplyArray.GetLength(1)]; //výsledná matice má počet řádků podle 1., počet sloupců podle 2. matice
+            for (int i = 0; i < resultArray.GetLength(0); i++)
+            {
+                int[] row = RowCopy(array, i); //array hodnot v jednotlivých sloupcích
+                for (int j = 0; j < resultArray.GetLength(1); j++)
+                {
+                    int[] column = ColumnCopy(multiplyArray, j); //array hodnot v jednotlivých řádcích
+                    for (int k = 0; k < resultArray.GetLength(1); k++)
+                    {
+                        resultArray[i, j] += row[k] * column[k]; //hodnota pole je součet součinů prvků i řádku 1. matice a j sloupce 2. matice
+                    }
+                }
+            }
+            PrintArray(resultArray);
+        }//součin matic
+        static int[] ColumnCopy(int[,] array, int y)
+        {
+            int[] column = new int[array.GetLength(0)];
+            for(int i = 0; i < array.GetLength(0); i++)
+            {
+                column[i] = array[i, y];
+            }
+            return column;
 
+        }//dělá array hodnot sloupce
+        static int[] RowCopy(int[,] array, int x)
+        {
+            int[] row = new int[array.GetLength(1)];
+            for (int i = 0; i < array.GetLength(1); i++)
+            {
+                row[i] = array[x, i];
+            }
+            return row;
+        }// dělá array hodnot řádku
+      
     }
 }
