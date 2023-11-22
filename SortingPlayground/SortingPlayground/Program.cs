@@ -17,38 +17,69 @@ namespace SortingPlayground
 
         static int[] BubbleSort(int[] array)
         {
-            int placeholder;
+            int placeHolder;
             int[] sortedArray = (int[])array.Clone(); // Řaď v tomto poli, ve kterém je výchoze zkopírováno všechno ze vstupního pole.
-            for (int i = 0; i < sortedArray.Length-1; i++)
+            int x = 0;
+            for (int j = 0; j < array.Length - 1; j++)
             {
-                int x = 0;
-                if (sortedArray[i] > sortedArray[i + 1])
+                for (int i = 0; i < sortedArray.Length - 1; i++)
                 {
-                    placeholder = sortedArray[i];
-                    sortedArray[i] = sortedArray[i + 1];
-                    sortedArray[i + 1] = placeholder;
-                    x++;
+                    if (sortedArray[i] > sortedArray[i + 1])
+                    {
+                        placeHolder = sortedArray[i];
+                        sortedArray[i] = sortedArray[i + 1];
+                        sortedArray[i + 1] = placeHolder;
+                        x++;
+                    }
                 }
-                
             }
+            Console.WriteLine("bublalo to " + x);
             return sortedArray;
         }
 
         static int[] SelectionSort(int[] array)
         {
             int[] sortedArray = (int[])array.Clone(); // Řaď v tomto poli, ve kterém je výchoze zkopírováno všechno ze vstupního pole.
-            /*
-             * TODO: Naimplementuj selection sort.
-             */
+            for (int i = 0; i < sortedArray.Length; i++)
+            {
+                int min = sortedArray[i];
+                int index = 0;
+                int placeHolder = 0;
+                bool yesNo = false;
+                for (int j = array.Length - i - 1; j > 0; j--)
+                {
+                    if (sortedArray[i + j] < min)
+                    {
+                        min = sortedArray[i + j];
+                        index = i + j;
+                        yesNo = true;
+                    }
+                }
+                if (yesNo == true)
+                {
+                    placeHolder = sortedArray[i];
+                    sortedArray[i] = min;
+                    sortedArray[index] = placeHolder;
+                }
+            }    
             return sortedArray;
         }
 
         static int[] InsertionSort(int[] array)
         {
             int[] sortedArray = (int[])array.Clone(); // Řaď v tomto poli, ve kterém je výchoze zkopírováno všechno ze vstupního pole.
-            /*
-             * TODO: Naimplementuj insertion sort.
-             */
+            for (int i = 1; i < sortedArray.Length; i++)
+            {
+                int remember = sortedArray[i];
+                int j = i - 1;
+                while (j >= 0 && remember < sortedArray[j])
+                {
+                    sortedArray[j+1] = sortedArray[j];
+                    j = j - 1;
+                }
+                sortedArray[j+1] = remember;
+            }
+
             return sortedArray;
         }
 
