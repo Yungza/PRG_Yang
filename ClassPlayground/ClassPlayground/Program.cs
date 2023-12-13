@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Http.Headers;
 using System.Runtime.Remoting.Messaging;
 using System.Text;
 using System.Threading.Tasks;
+using System.Xml.Linq;
 using System.Xml.Schema;
 
 /*
@@ -66,12 +68,16 @@ namespace ClassPlayground
 {
     internal class Program
     {
+
         static void Main(string[] args)
         {
             switch (Console.ReadLine())
             {
                 case "1":
                     RectanglePlayground();
+                    break;
+                case "2":
+                    BankAccountPlayground();
                     break;
             }
             Console.ReadKey();
@@ -114,7 +120,17 @@ namespace ClassPlayground
         }
         static void BankAccountPlayground()
         {
-
+            BankAccount human1 = new BankAccount(123456, "Honza", "koruna", 500);
+            BankAccount human2 = new BankAccount(654321, "Filip", "koruna", 500);
+            human2.name = human2;
+            Dictionary<int, BankAccount> LinkNum = new Dictionary<int, BankAccount>();
+            LinkNum[human2.accountNumber] = human2.name;
+            human1.Deposit(100);
+            human1.Witdhdraw(200);
+            human1.Transfer(100, LinkNum[654321]);
+            Console.WriteLine($"Honza má {human1.balance} korun, Filip má {human2.balance}");
+            BankAccount human3 = new BankAccount("Tobi", "koruna");
+            Console.WriteLine($"{human3.holderName} má číslo účtu {human3.accountNumber}, má {human3.balance} {human3.currency}");
         }
     }
 }

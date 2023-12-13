@@ -23,16 +23,26 @@ namespace ClassPlayground
  */
     internal class BankAccount
     {
-        int accountNumber; string holderName; string currency; int balance;
+        public int accountNumber;
+        public string holderName; 
+        public string currency; 
+        public int balance; 
+        public BankAccount name;
         public BankAccount(int accountNumber, string holderName, string currency, int balance)
         {
-            Dictionary<int, BankAccount> LinkNum = new Dictionary<int, BankAccount>();
-            LinkNum[accountNumber] = BankAccount;
             this.accountNumber = accountNumber;
             this.holderName = holderName;
             this.currency = currency;
             this.balance = balance;
 
+        }
+        public BankAccount(string holderName, string currency)
+        {
+            this.holderName = holderName;
+            this.currency = currency;
+            Random rnd = new Random();
+            this.accountNumber = rnd.Next(100000000,1000000000);
+            this.balance = 0;
         }
         public int Deposit(int amount)
         {
@@ -49,8 +59,10 @@ namespace ClassPlayground
             balance = balance - amount;
             return balance;
         }
-        public int Transfer(int amount)
+        public int Transfer(int amount, BankAccount human2)
         {
+            balance -= amount;
+            human2.balance += amount;
             return balance;
         }
     }
