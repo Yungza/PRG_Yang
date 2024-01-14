@@ -17,12 +17,13 @@ namespace PRG_Game
         public static Random rnd = new Random();
         static void Main(string[] args)
         {
+            Console.WriteLine("welcome to my game!, use WASD to move around and beat final boss in G!");
+            Console.WriteLine("press any key to proceed");
+            Console.ReadKey();
             List<Characters> playerTeam = new List<Characters>
             {
                 CreateHounzenka(),null,null
             };
-            Characters boss = CreateCat();
-            boss.level = 200;
             UpdateHP(playerTeam[0]);
             char[,] map = new char[32, 32];
             FillMap(map);
@@ -41,7 +42,6 @@ namespace PRG_Game
             while (CheckTeamAlive(playerTeam) && enemy.healthPoint > 0)
             {
                 player = ChooseCharacter(playerTeam);
-                UpdateHP(player);
                 while (player.healthPoint > 0 && enemy.healthPoint > 0)
                 {
                     Console.Clear();
@@ -101,7 +101,7 @@ namespace PRG_Game
                 }
             }
 
-        }
+        } // battle, wild characters use strong atack on default
         static Characters ChooseCharacter(List<Characters> playerTeam)
         {
             for (int i = 0; i < 3; i++)
@@ -129,7 +129,7 @@ namespace PRG_Game
             {
                 return playerTeam[int.Parse(input)];
             }
-        }
+        }// chooses an available character
         static bool CheckTeamAlive(List<Characters> playerTeam)
         {
             for (int i = 0; i < 3; i++)
@@ -143,7 +143,7 @@ namespace PRG_Game
                 }
             }
             return false;
-        }
+        } // returns a bool whether the team is dead or not
         static Abilities ChooseAbility(Characters character)
         {
             Console.WriteLine($"1.: {character.normalAbility.name}: {character.normalAbility.desciption}");
@@ -163,7 +163,7 @@ namespace PRG_Game
             {
                 return character.specialAbility;
             }
-        }
+        } // chooses an available ability
         static Abilities CreateFireAtack()
         {
             Abilities fireAtack = new Abilities();
@@ -173,8 +173,8 @@ namespace PRG_Game
             fireAtack.accuracy = 100;
             fireAtack.desciption = "deals 50 fire damage to the target";
             return fireAtack;
-        }
-        static Abilities CreateWaterAtack()
+        }// fire atack
+        static Abilities CreateWaterAtack() // water atack
         {
             Abilities waterAtack = new Abilities();
             waterAtack.name = "water atack";
@@ -184,7 +184,7 @@ namespace PRG_Game
             waterAtack.desciption = "deals 50 water damage to the target";
             return waterAtack;
         }
-        static Abilities CreateGrassAtack()
+        static Abilities CreateGrassAtack() // grass atack
         {
             Abilities grassAtack = new Abilities();
             grassAtack.name = "grass atack";
@@ -194,7 +194,7 @@ namespace PRG_Game
             grassAtack.desciption = "deals 50 grass damage to the target";
             return grassAtack;
         }
-        static Abilities CreateStrongFireAtack()
+        static Abilities CreateStrongFireAtack() // fire atack 2
         {
             Abilities strongFire = new Abilities();
             strongFire.name = "strong fire atack";
@@ -205,7 +205,7 @@ namespace PRG_Game
             return strongFire;
 
         }
-        static Abilities CreateStrongWaterAtack()
+        static Abilities CreateStrongWaterAtack() // water atack 2
         {
             Abilities strongWater = new Abilities();
             strongWater.name = "strong water atack";
@@ -215,7 +215,7 @@ namespace PRG_Game
             strongWater.desciption = "low accuracy ability that deals 100 water damage to the target";
             return strongWater;
         }
-        static Abilities CreateStrongGrassAtack()
+        static Abilities CreateStrongGrassAtack() // grass atack 2
         {
             Abilities strongGrass = new Abilities();
             strongGrass.name = "strong grass atack";
@@ -225,7 +225,7 @@ namespace PRG_Game
             strongGrass.desciption = "low accuracy ability that deals 100 grass damage to the target";
             return strongGrass;
         }
-        static Characters CreateHounzenka()
+        static Characters CreateHounzenka() // character hounzenka 🐛
         {
             Characters hounzenka = new Characters();
             hounzenka.type = "grass";
@@ -246,8 +246,8 @@ namespace PRG_Game
             cat.normalAbility = CreateFireAtack();
             cat.specialAbility = CreateStrongFireAtack();
             return cat;
-        }
-        static Characters CreateFilipsh()
+        } // character cat 😺
+        static Characters CreateFilipsh() // character fish 🐟
         {
             Characters filipsh = new Characters();
             filipsh.type = "water";
@@ -258,14 +258,14 @@ namespace PRG_Game
             filipsh.specialAbility = CreateStrongWaterAtack();
             return filipsh;
         }
-        static void UpdateHP(Characters character)
+        static void UpdateHP(Characters character) // calculates hp based on level
         {
             character.maxHealth = 100 + character.level * 20;
             character.healthPoint = character.maxHealth;
         }
-        static void PlayerMovement(char[,] map, char[,] mapEdit, List<Characters> playerTeam)
+        static void PlayerMovement(char[,] map, char[,] mapEdit, List<Characters> playerTeam) // moving around the map
         {
-            mapEdit[15, 1] = '0';
+            mapEdit[15, 1] = '0'; // player starting location
             int locationX = 15;
             int locationY = 1;
             DateTime pressTime = DateTime.MinValue;
@@ -282,7 +282,7 @@ namespace PRG_Game
                     {
                         case ConsoleKey.W:
                             if (ValidMovement(mapEdit, locationX - 1, locationY))
-                            {   
+                            {
                                 FillHole(map, mapEdit, locationX, locationY);
                                 locationX -= 1;
                             }
@@ -335,7 +335,7 @@ namespace PRG_Game
                         Console.Clear();
                         PrintMap(mapEdit);
                     }
-                    if (map[locationX, locationY] == '"')
+                    if (map[locationX, locationY] == '"') // encountering wild characters
                     {
                         if (RNG(50))
                         {
@@ -349,15 +349,21 @@ namespace PRG_Game
                             }
                         }
                     }
-                    if (map[locationX,locationY] == 'W')
+                    else if (map[locationX, locationY] == 'W') // encountering wild characters
                     {
                         if (RNG(50))
                         {
                             Battle(CreateFilipsh(), playerTeam);
                         }
                     }
+                    else if (map[locationX, locationY] == 'G') // final boss, might be a little bit hard
+                    {
+                        Characters boss = CreateCat();
+                        boss.level = 500;
+                        Battle(boss, playerTeam);
+                    }
                 }
-                else
+                else // don't like fast movements
                 {
                     Console.WriteLine("zpomal týpku");
                 }
@@ -375,8 +381,8 @@ namespace PRG_Game
             {
                 return true;
             }
-        }
-        static bool NonValidMovement()
+        } // checks if player's trying to walk into wall or a tree
+        static bool NonValidMovement() // returns bool whether the player movement is legal
         {
             Console.WriteLine("neplatný movement");
             return false;
@@ -384,7 +390,7 @@ namespace PRG_Game
         static void FillHole(char[,] map, char[,] mapEdit, int x, int y)
         {
             mapEdit[x,y] = map[x,y];
-        }
+        } // rewrites the current position of player back 
         static void FillMap(char[,] map)
         {
             for (int i = 0; i < 32; i++) // tráva
@@ -465,7 +471,7 @@ namespace PRG_Game
             map[15, 5] = map[28, 5] = map[28, 23] = map[15, 23] = map[15, 20] = map[10, 5] = map[4, 5] = map[4, 20] = map[6, 20] = map[6,15] = map[10,15] = '+'; // křižovatky
             map[15, 30] = 'G'; // Gym
 
-        }
+        } // creates the map
         static void PrintMap(char[,] map)
         {
             for (int i = 0; i < 32; i++)
@@ -477,7 +483,7 @@ namespace PRG_Game
                 }
                 Console.WriteLine();
             }
-        }
+        } // as title says
         public static bool RNG(int percentage)
         {
             int rng = rnd.Next(0, 100);
@@ -489,6 +495,6 @@ namespace PRG_Game
             {
                 return false;
             }
-        }
+        } // decides about if a situation is going to happen
     }
 }
