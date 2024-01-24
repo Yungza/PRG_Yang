@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.InteropServices;
 
 /*
  * Made by Jan Borecky for PRG seminar at Gymnazium Voderadska, year 2023-2024.
@@ -66,7 +67,6 @@ namespace DFS
              */
             do
             {
-                pathToTargetNode.Add(currentNode.index);
                 if (currentNode.children[0] != null && currentNode.visitedChildren.Count == 0)
                 {
                     currentNode.visitedChildren.Add(currentNode.children[0]);
@@ -84,7 +84,13 @@ namespace DFS
                 }
             }
             while (currentNode.index != targetNodeIndex);
-            pathToTargetNode.Add(currentNode.index);
+            while(currentNode.parent != null)
+            {
+                pathToTargetNode.Add(currentNode.index);
+                currentNode = currentNode.parent;
+            }
+            pathToTargetNode.Add(1);
+            pathToTargetNode.Reverse();
             return pathToTargetNode;
         }
 
