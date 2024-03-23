@@ -59,5 +59,15 @@ namespace HW_malovani.Properties {
                 resourceCulture = value;
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap bio_soja_edamame_chiba_green_glycine_max_prodej_bio_semen_20_ks {
+            get {
+                object obj = ResourceManager.GetObject("bio_soja_edamame_chiba_green_glycine_max_prodej_bio_semen_20_ks", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
     }
 }

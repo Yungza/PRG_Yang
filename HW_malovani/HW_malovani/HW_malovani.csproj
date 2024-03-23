@@ -82,7 +82,7 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\edamame.jfif" />
+    <None Include="Properties\bio-soja-edamame-chiba-green-glycine-max-prodej-bio-semen-20-ks.jpg" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
